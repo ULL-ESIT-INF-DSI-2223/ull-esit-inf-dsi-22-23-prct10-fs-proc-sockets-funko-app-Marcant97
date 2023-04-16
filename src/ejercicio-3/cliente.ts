@@ -8,8 +8,6 @@ import {connect} from 'net';
 import { MessageEventEmitterClient } from './MessageEventEmitterClient.js';
 import { Tipo, Genero, RequestType, ResponseType } from './types.js';
 import { Funko } from './funko.js';
-import { exit } from 'process';
-
 
 
 const client = new MessageEventEmitterClient(60300);
@@ -91,7 +89,9 @@ yargs(hideBin(process.argv)).command('add', 'Adds a funko', {
   const agregar: RequestType = {
     comando: 'add',
     user: argv.user,
-    funko: [funko_aux]
+    funko: [funko_aux],
+    nombre: argv.nombre,
+    id: argv.id
   }
   client.send(agregar);
   client.recieve();
@@ -204,7 +204,9 @@ yargs(hideBin(process.argv)).command('update', 'Modifies a funko', {
   const modificar: RequestType = {
     comando: 'update',
     user: argv.user,
-    funko: [funko_aux]
+    funko: [funko_aux],
+    nombre: argv.nombre,
+    id: argv.id
   }
   client.send(modificar);
   client.recieve();
@@ -268,67 +270,31 @@ yargs(hideBin(process.argv)).command('read', 'Reads a funko', {
 
 
 
-
-
-
-
 client.on('message', (request) => {
-  // console.log(request);
+
   const serverResponse: ResponseType = request;
-  console.log(`Respuesta recibida ${serverResponse.comando}`);
-  if(serverResponse.success) {
-    console.log(chalk.green(`La petición resultó: ${serverResponse.success}`));
+
+  if(serverResponse.success) {  // si el comando se ha ejecutado correctamente
     if(serverResponse.comando === "list") {
-      console.log("La colleción es la siguiente:");
       const funkoPops: Funko[] = serverResponse.funko as Funko[];
       funkoPops.forEach((funko) => {
-        // let funko_: Funko = new Funko(0, "", "", TiposFunko.POP, GeneroFunko.PELICULAS, "", 1, false, "", 20);
-        // funko_ = Object.assign(funko_, funko);
-        // funko_.imprimirFunko();
-        console.log(funko);
+        console.log(chalk.white(JSON.stringify(funko)));
       });
     } 
     else if(serverResponse.comando === "read") {
-      if (serverResponse.funko != undefined) {
-        if (serverResponse.funko[0].getID === 0) {
-          console.log("No existe el funko solicitado");
-        }
-        else {
-          console.log(serverResponse);
-          console.log('mi id: ' + serverResponse.funko[0].getID);
-          const mi_funko = new Funko(serverResponse.funko[0].getNombre, serverResponse.funko[0].getDescripcion, serverResponse.funko[0].getTipo, serverResponse.funko[0].getGenero, serverResponse.funko[0].getFranquicia, serverResponse.funko[0].getNumero, serverResponse.funko[0].getExclusivo, serverResponse.funko[0].getCaracteristicasEspeciales, serverResponse.funko[0].getValorMercado, serverResponse.funko[0].getID);
-          console.log(chalk.white("-----------------------------------"));
-          console.log(chalk.white(`ID: ${mi_funko.getID}`));
-          console.log(chalk.white(`Nombre: ${mi_funko.getNombre}`));
-          console.log(chalk.white(`Descripcion: ${mi_funko.getDescripcion}`));
-          console.log(chalk.white(`Tipo: ${mi_funko.getTipo}`));
-          console.log(chalk.white(`Genero: ${mi_funko.getGenero}`));
-          console.log(chalk.white(`Franquicia: ${mi_funko.getFranquicia}`));
-          console.log(chalk.white(`Numero: ${mi_funko.getNumero}`));
-          console.log(chalk.white(`Exclusivo: ${mi_funko.getExclusivo}`));
-          console.log(chalk.white(`Caracteristicas Especiales: ${mi_funko.getCaracteristicasEspeciales}`));
-          if (mi_funko.getValorMercado <= 50) {
-            console.log(chalk.green(`Valor de mercado: ${mi_funko.getValorMercado}`));
-          }
-          else if (mi_funko.getValorMercado > 50 && mi_funko.getValorMercado <= 100) {
-            console.log(chalk.yellow(`Valor de mercado: ${mi_funko.getValorMercado}`));
-          }
-          else if (mi_funko.getValorMercado > 100 && mi_funko.getValorMercado <= 200) {
-            console.log(chalk.red(`Valor de mercado: ${mi_funko.getValorMercado}`));
-          }    
-          else {
-            console.log(chalk.blue(`Valor de mercado: ${mi_funko.getValorMercado}`));
-          }
-        }
-      }
-      // console.log("El funko solicitado es:");
-      // let funko_: Funko = new Funko(0, "", "", TiposFunko.POP, GeneroFunko.PELICULAS, "", 1, false, "", 20);
-      // funko_ = Object.assign(funko_, serverResponse.funkoPops);
-      // funko_.imprimirFunko()
-      // console.log(request);
+      // if (serverResponse.funko != undefined) {
+        const array_funkos = serverResponse.funko as Funko[];
+        const mi_funko = array_funkos[0];
+        console.log(chalk.white(JSON.stringify(mi_funko)));
+      // }
+      
     }
-  } else {
-    console.log(chalk.red(`La respuesta fue: ${serverResponse.success}`));
+    else { // para el resto de comandos que sólo reciben una cadena como respuesta.
+      console.log(chalk.green(`Respuesta: ${serverResponse.cadena}`));
+    }
+  } 
+  else { // si el comando no se ha ejecutado correctamente
+    console.log(chalk.red(`Respuesta: ${serverResponse.cadena}`));
   }
 });
 

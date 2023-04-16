@@ -23,13 +23,20 @@ export enum Genero {
   Anime = "Anime",
 }
 
+/**
+ * Type para las peticiones
+ */
 export type RequestType = {
   comando: 'add' | 'update' | 'remove' | 'read' | 'list';
   funko?: Funko[],
   user? : string,
-  id?: number
+  id?: number,
+  nombre?: string,
 }
 
+/**
+ * Typer para las respuestas.
+ */
 export type ResponseType = {
   comando: 'add' | 'update' | 'remove' | 'read' | 'list';
   success: boolean;
