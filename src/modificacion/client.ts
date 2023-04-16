@@ -1,9 +1,4 @@
 import {connect} from 'net';
-import {MessageEventEmitterClient} from './eventEmitterClient.js';
-
-// const client = new MessageEventEmitterClient(connect({port: 60300}));
-
-// el cliente tiene que recibir como parámetro un comando con opciones
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
@@ -40,16 +35,3 @@ yargs(hideBin(process.argv)).command('command', 'Comando a ejecutar de la forma 
 
 }).help().argv;
 
-
-
-// client.on('message', (message) => {
-//   if (message.type === 'watch') {
-//     console.log(`Connection established: watching file ${message.file}`);
-//   } else if (message.type === 'change') {
-//     console.log('File has been modified.');
-//     console.log(`Previous size: ${message.prevSize}`);
-//     console.log(`Current size: ${message.currSize}`);
-//   } else {
-//     console.log(`Message type ${message.type} is not valid`);
-//   }
-// });

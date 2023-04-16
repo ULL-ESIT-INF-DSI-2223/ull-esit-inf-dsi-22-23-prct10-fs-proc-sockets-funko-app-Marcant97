@@ -25,7 +25,7 @@ yargs(hideBin(process.argv)).command('file', 'Muestra el número de líneas, pal
     demandOption: false
   }
 }, (argv) => {
-  // no puedo usar pipe
+  
   const wc11 = spawn('cat', [argv.nombre]);
   
   if (argv.lineas) {
@@ -39,12 +39,6 @@ yargs(hideBin(process.argv)).command('file', 'Muestra el número de líneas, pal
     wc12.stdout.on('data', (data) => {
       process.stdout.write(data);
     });
-    // wc12.on('exit', (code) => {
-      //     wc11.kill();
-      //     wc22.kill();
-      //     wc32.kill();
-      //     process.exit(code as number);
-      // });
     }
     
   if (argv.palabras) {
@@ -56,15 +50,10 @@ yargs(hideBin(process.argv)).command('file', 'Muestra el número de líneas, pal
         wc22.stdin.end();
     });
     wc22.stdout.on('data', (data) => {
-        process.stdout.write(data);
-      });
-      // wc22.on('exit', (code) => {
-        //     wc11.kill();
-        //     wc12.kill();
-        //     wc32.kill();
-        //     process.exit(code as number);
-        // });
-      }
+      process.stdout.write(data);
+    });
+
+  }
       
   if (argv.caracteres) {
     const wc32 = spawn('wc', ['-c']);
@@ -77,21 +66,10 @@ yargs(hideBin(process.argv)).command('file', 'Muestra el número de líneas, pal
     wc32.stdout.on('data', (data) => {
         process.stdout.write(data);
     });
-    // wc32.on('exit', (code) => {
-    //     wc11.kill();
-    //     wc12.kill();
-    //     wc22.kill();
-    //     process.exit(code as number);
-    // });
   }
 
 
   if(!argv.lineas && !argv.palabras && !argv.caracteres) {
     console.log("Se debe especificar al menos una opción [--lineas] [--palabras] [--caracteres]");
-    // wc11.kill();
-    // wc12.kill();
-    // wc22.kill();
-    // wc32.kill();
-    // process.exit(1);
   }
 }).help().argv;

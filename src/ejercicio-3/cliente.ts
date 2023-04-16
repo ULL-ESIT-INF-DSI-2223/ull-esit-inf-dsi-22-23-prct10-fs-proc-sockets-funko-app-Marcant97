@@ -1,7 +1,5 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-// import { addFunko, eliminarFunko, listaFunkos, mostrarFunko, modificarFunko } from './funciones.js';
-// import { Genero, Tipo, list} from './types.js';
 import chalk from 'chalk';
 
 import {connect} from 'net';
@@ -269,7 +267,9 @@ yargs(hideBin(process.argv)).command('read', 'Reads a funko', {
 
 
 
-
+/**
+ * evento on
+ */
 client.on('message', (request) => {
 
   const serverResponse: ResponseType = request;
@@ -285,16 +285,14 @@ client.on('message', (request) => {
       // if (serverResponse.funko != undefined) {
         const array_funkos = serverResponse.funko as Funko[];
         const mi_funko = array_funkos[0];
-        console.log(chalk.white(JSON.stringify(mi_funko)));
-      // }
-      
+        console.log(chalk.white(JSON.stringify(mi_funko)));      
     }
     else { // para el resto de comandos que sólo reciben una cadena como respuesta.
-      console.log(chalk.green(`Respuesta: ${serverResponse.cadena}`));
+      console.log(chalk.green(`${serverResponse.cadena}`));
     }
   } 
   else { // si el comando no se ha ejecutado correctamente
-    console.log(chalk.red(`Respuesta: ${serverResponse.cadena}`));
+    console.log(chalk.red(`${serverResponse.cadena}`));
   }
 });
 

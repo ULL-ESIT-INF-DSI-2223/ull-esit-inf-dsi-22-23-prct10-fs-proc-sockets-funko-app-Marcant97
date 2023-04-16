@@ -15,12 +15,7 @@ net.createServer((connection) => {
       console.log('opciones: ' + mensaje.opciones);
       if (mensaje.opciones === undefined) {
         const salida = spawn(mensaje.comando, [mensaje.fichero]);
-        // salida.stdout.pipe(process.stdout);
-
-        // const salidaString = salida.stdout.pipe(process.stdout);
-        // salida2 = salidaString.toString();
         salida2 = salida.stdout.pipe(process.stdout).toString();
-
       }
       connection.write(salida2);
       console.log('mensaje enviado' + salida2);
