@@ -4,6 +4,7 @@ import {EventEmitter} from 'events';
 import {NetConnectOpts, connect, Socket} from 'net';
 import { RequestType } from './types.js';
 
+
 export class MessageEventEmitterClient extends EventEmitter {
   
   private connection: Socket;
@@ -24,6 +25,7 @@ export class MessageEventEmitterClient extends EventEmitter {
   // un array con parámetros opcionales
   send(args: RequestType ) {
     this.connection.write(JSON.stringify(args));
+    return true;
   }
 
   recieve(): boolean {

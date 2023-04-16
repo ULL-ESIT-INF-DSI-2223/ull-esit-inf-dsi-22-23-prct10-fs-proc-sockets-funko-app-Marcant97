@@ -23,27 +23,12 @@ export function leerFunkos(usuario: string): Funko[] {
   return lista_funkos;
 }
 
-
 /**
- * Método que añade un funko nuevo a la colección de un usuario
- * @param id id del funko
- * @param usuario usuario al que deseamos añadir el funko
- * @param nombre nombre del funko
- * @param descripcion descripción del funko
- * @param tipo tipo del funko
- * @param genero género del funko
- * @param franquicia franquicia del funko
- * @param numero número del funko
- * @param exclusivo es exclusivo o no
- * @param caracteristicasEspeciales características especiales del funko
- * @param valorMercado valor de mercado del funko
- * @returns true si se ha añadido correctamente, false si no.
+ * función que añade un funko a la colección de un usuario
+ * @param usuario usuario al que se quiere añadir el funko
  */
-// export function addFunko(id:number, usuario:string, nombre: string, descripcion: string, tipo: Tipo, genero: Genero, franquicia: string, numero: number, exclusivo: boolean, caracteristicasEspeciales: string, valorMercado: number): string{
 export function addFunko(peticion: RequestType): ResponseType{
-  // if (peticion.funko !== undefined) {
-  //   writeFileSync('./database/' + peticion.user + '/' + peticion.nombre + '.json', JSON.stringify(peticion.funko[0]));
-  // }
+
 // 1. comprobar que el usuario existe
   const nombre_usuario = peticion.user;
   const id = peticion.id;
@@ -75,12 +60,12 @@ export function addFunko(peticion: RequestType): ResponseType{
       return respueta;
     }
   }
-  const respueta: ResponseType = {
+  const respuesta: ResponseType = {
     comando: 'add',
     success: false,
     cadena: `Funko already exists at ${nombre_usuario} collection!`
   }
-  return respueta;
+  return respuesta;
 }
 
 /**
